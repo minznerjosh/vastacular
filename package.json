@@ -1,0 +1,26 @@
+{
+  "name": "vastacular",
+  "version": "0.0.0",
+  "description": "Fetches/parses IAB VAST 2.0/3.0 XML.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cinema6/vastacular.git"
+  },
+  "keywords": [
+    "advertising",
+    "VAST",
+    "IAB",
+    "xml",
+    "ads"
+  ],
+  "author": "Cinema6, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cinema6/vastacular/issues"
+  },
+  "homepage": "https://github.com/cinema6/vastacular"
+}
