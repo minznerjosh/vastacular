@@ -17,6 +17,7 @@ Here is complete JSON-formatted VAST document:
     version: '2.0',
     ads: [
         {
+            id: '12345',
             type: 'inline',
             system: {
                 name: 'LiveRail',
@@ -73,20 +74,33 @@ Here is complete JSON-formatted VAST document:
                             maintainAspectRatio: true,
                             apiFramework: 'none'
                         }
-                    ],
-                    companionAds: [
+                    ]
+                },
+                {
+                    id: 'companion-id',
+                    type: 'companions',
+                    companions: [
                         {
-                            id: 'companion-id',
                             width: 300,
                             height: 250,
                             expandedWidth: 800,
                             expandedHeight: 600,
                             apiFramework: '...',
-                            resource: {
-                                type: 'static', // or 'iframe' or 'html'
-                                creativeType: 'image/png',
-                                data: 'http://cinema6.com/images/ad.png' // or a blob of html
-                            },
+                            resources: [
+                                {
+                                    type: 'static',
+                                    creativeType: 'image/png',
+                                    data: 'http://cinema6.com/images/ad.png' // or a blob of html
+                                },
+                                {
+                                    type: 'iframe',
+                                    data: 'http://cinema6.com/pages/ad.html'
+                                },
+                                {
+                                    type: 'html',
+                                    data: '<p>Hello!</p>'
+                                }
+                            ],
                             trackingEvents: [
                                 {
                                     event: 'creativeView',
@@ -102,19 +116,36 @@ Here is complete JSON-formatted VAST document:
                 {
                     id: 'some-id',
                     type: 'nonLinear',
-                    width: 970,
-                    height: 200,
-                    expandedWidth: 800,
-                    expandedHeight: 600,
-                    scalable: true,
-                    maintainAspectRatio: true,
-                    minSuggestedDuration: 10, // seconds
-                    apiFramework: '...',
-                    resource: {
-                        type: 'static', // or 'iframe' or 'html'
-                        creativeType: 'image/png',
-                        data: 'http://cinema6.com/images/ad.png' // or a blob of html
-                    },
+                    ads: [
+                        {
+                            id: 'linear-id',
+                            width: 970,
+                            height: 200,
+                            expandedWidth: 800,
+                            expandedHeight: 600,
+                            scalable: true,
+                            maintainAspectRatio: true,
+                            minSuggestedDuration: 10, // seconds
+                            apiFramework: '...',
+                            resources: [
+                                {
+                                    type: 'static',
+                                    creativeType: 'image/png',
+                                    data: 'http://cinema6.com/images/ad.png' // or a blob of html
+                                },
+                                {
+                                    type: 'iframe',
+                                    data: 'http://cinema6.com/pages/ad.html'
+                                },
+                                {
+                                    type: 'html',
+                                    data: '<p>Hello!</p>'
+                                }
+                            ]
+                            clickThrough: 'http://cinema6.com/store',
+                            parameters: 'foo=bar'
+                        }
+                    ],
                     trackingEvents: [
                         {
                             event: 'start',
@@ -124,12 +155,9 @@ Here is complete JSON-formatted VAST document:
                             event: 'midpoint',
                             uri: 'http://cinema6.com/pixels/midpoint'
                         }
-                    ],
-                    clickThrough: 'http://cinema6.com/store',
-                    parameters: 'foo=bar'
+                    ]
                 }
-            ],
-            extensions: [] // Any valid JSON objects can go in here
+            ]
         },
         {
             type: 'wrapper',
