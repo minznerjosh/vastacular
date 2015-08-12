@@ -31,6 +31,9 @@ module.exports = function gruntfile(grunt) {
             }
         },
         jshint: {
+            options: {
+                jshintrc: true
+            },
             code: {
                 src: CODE
             }
