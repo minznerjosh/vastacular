@@ -43,7 +43,6 @@ module.exports = function gruntfile(grunt) {
     ]);
 
     grunt.registerTask('tdd', [
-        'test',
         'watch:test'
     ]);
 };
