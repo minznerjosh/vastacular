@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="2.0">
+    <Ad id="preroll-1">
+        <InLine>
+            <AdSystem version="some-version">2.0</AdSystem>
+            <AdTitle>5748406</AdTitle>
+            <Description>This is my awesome ad.</Description>
+            <Survey><![CDATA[http://cinema6.com/survey]]></Survey>
+            <Error><![CDATA[http://cinema6.com/pixels/error]]></Error>
+            <Error><![CDATA[http://cinema6.com/pixels/error2]]></Error>
+            <Impression id="blah"><![CDATA[http://b.scorecardresearch.com/b?C1=1&C2=6000003&C3=0000000200500000197000000&C4=us&C7=http://www.scanscout.com&C8=scanscout.com&C9=http://www.scanscout.com&C10=xn&rn=-103217130]]></Impression>
+            <Impression id="foo"><![CDATA[http://b.scorecardresearch.com/b?C1=1&C2=6000003&C3=8327rgh7438trg7843tr578]]></Impression>
+            <Creatives>
+                <Creative id="my-creative" sequence="1" AdID="874839578">
+                    <Linear>
+                        <Duration>02:22:30</Duration>
+                        <TrackingEvents>
+                            <Tracking event="creativeView">http://myTrackingURL/creativeView</Tracking>
+                            <Tracking event="start">http://myTrackingURL/start</Tracking>
+                            <Tracking event="midpoint">http://myTrackingURL/midpoint</Tracking>
+                            <Tracking event="firstQuartile">http://myTrackingURL/firstQuartile</Tracking>
+                            <Tracking event="thirdQuartile">http://myTrackingURL/thirdQuartile</Tracking>
+                            <Tracking event="complete">http://myTrackingURL/complete</Tracking>
+                        </TrackingEvents>
+                        <AdParameters>foo=var</AdParameters>
+                        <VideoClicks>
+                            <ClickThrough id="scanscout"><![CDATA[http://www.target.com]]></ClickThrough>
+                            <ClickTracking><![CDATA[http://cinema6.com/tracking/video-click]]></ClickTracking>
+                            <ClickTracking><![CDATA[http://cinema6.com/tracking/video-click2]]></ClickTracking>
+                            <CustomClick id="click1"><![CDATA[http://cinema6.com/tracking/custom-click1]]></CustomClick>
+                            <CustomClick id="click2"><![CDATA[http://cinema6.com/tracking/custom-click2]]></CustomClick>
+                        </VideoClicks>
+                        <MediaFiles>
+                            <MediaFile height="396" width="600" bitrate="496" type="video/x-flv" delivery="progressive"><![CDATA[http://media.scanscout.com/ads/partner1_a1d1fbbc-c4d4-419f-b6c8-e9db63fd4491.flv]]></MediaFile>
+                            <MediaFile id="mp4" height="1080" width="1920" bitrate="1024" type="video/mp4" delivery="streaming" scalable="true" maintainAspectRatio="false" apiFramework="html5"><![CDATA[http://cinema6.com/videos/ad.mp4]]></MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+                <Creative id="my-creative-companion" sequence="1" AdID="foisdhjfos">
+                    <CompanionAds>
+                        <Companion id="comp1" width="300" height="250" expandedWidth="800" expandedHeight="600" apiFramework="foo">
+                            <StaticResource creativeType="image/png"><![CDATA[http://cinema6.com/images/ad.png]]></StaticResource>
+                            <IFrameResource><![CDATA[http://cinema6.com/pages/ad.html]]></IFrameResource>
+                            <HTMLResource><![CDATA[<p>Hello!</p>]]></HTMLResource>
+                            <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://cinema6.com/tracking/creative-view]]></Tracking>
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://cinema6.com/store]]></CompanionClickThrough>
+                            <AltText>Loading an awesome companion ad!</AltText>
+                            <AdParameters>hello=world</AdParameters>
+                        </Companion>
+                        <Companion height="250" width="300" id="555750">
+                            <HTMLResource><![CDATA[<A onClick="var i= new Image(1,1); i.src='http://app.scanscout.com/ssframework/log/log.png?a=logitemaction&RI=555750&CbC=1&CbF=true&EC=0&RC=0&SmC=2&CbM=1.0E-5&VI=736e6b13bad531dc476bc3612749bc35&admode=preroll&PRI=-4827170214961170629&RprC=0&ADsn=17&VcaI=192,197&RrC=1&VgI=736e6b13bad531dc476bc3612749bc35&AVI=142&Ust=ma&Uctry=us&CI=1223187&AC=4&PI=567&Udma=506&ADI=5748406&VclF=true';" HREF="http://target.com" target="_blank">
+                            <IMG SRC="http://media.scanscout.com/ads/target300x250Companion.jpg" BORDER=0 WIDTH=300 HEIGHT=250 ALT="Click Here">
+                            </A>
+                            <img src="http://app.scanscout.com/ssframework/log/log.png?a=logitemaction&RI=555750&CbC=1&CbF=true&EC=1&RC=0&SmC=2&CbM=1.0E-5&VI=736e6b13bad531dc476bc3612749bc35&admode=preroll&PRI=-4827170214961170629&RprC=0&ADsn=17&VcaI=192,197&RrC=1&VgI=736e6b13bad531dc476bc3612749bc35&AVI=142&Ust=ma&Uctry=us&CI=1223187&AC=4&PI=567&Udma=506&ADI=5748406&VclF=true" height="1" width="1">
+                            ]]></HTMLResource>
+                        </Companion>
+                    </CompanionAds>
+                </Creative>
+                <Creative id="my-creative" sequence="3">
+                    <NonLinearAds>
+                        <NonLinear id="non-linear-id" width="970" height="250" expandedWidth="970" expandedHeight="500" scalable="true" maintainAspectRatio="true" minSuggestedDuration="00:01:00" apiFramework="flash">
+                            <StaticResource creativeType="image/png"><![CDATA[http://cinema6.com/images/ad.png]]></StaticResource>
+                            <IFrameResource><![CDATA[http://cinema6.com/pages/ad.html]]></IFrameResource>
+                            <HTMLResource><![CDATA[<p>Hello!</p>]]></HTMLResource>
+                            <NonLinearClickThrough><![CDATA[http://cinema6.com/store]]></NonLinearClickThrough>
+                            <AdParameters>hello=world</AdParameters>
+                        </NonLinear>
+                        <NonLinear width="970" height="250">
+                            <StaticResource creativeType="image/png"><![CDATA[http://cinema6.com/images/ad.png]]></StaticResource>
+                        </NonLinear>
+                        <TrackingEvents>
+                            <Tracking event="start"><![CDATA[http://cinema6.com/tracking/non-linear-start]]></Tracking>
+                            <Tracking event="complete"><![CDATA[http://cinema6.com/tracking/non-linear-complete]]></Tracking>
+                        </TrackingEvents>
+                    </NonLinearAds>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+    <Ad id="wrapper">
+        <Wrapper>
+            <AdSystem version="foo">2.0</AdSystem>
+            <VASTAdTagURI><![CDATA[http://cinema6.com/vast/ad.xml]]></VASTAdTagURI>
+            <Error><![CDATA[http://cinema6.com/pixels/error]]></Error>
+            <Error><![CDATA[http://cinema6.com/pixels/error2]]></Error>
+            <Impression id="blah"><![CDATA[http://b.scorecardresearch.com/b?C1=1&C2=6000003&C3=0000000200500000197000000&C4=us&C7=http://www.scanscout.com&C8=scanscout.com&C9=http://www.scanscout.com&C10=xn&rn=-103217130]]></Impression>
+            <Impression id="foo"><![CDATA[http://b.scorecardresearch.com/b?C1=1&C2=6000003&C3=8327rgh7438trg7843tr578]]></Impression>
+            <Creatives>
+                <Creative id="my-creative" sequence="1" AdID="874839578">
+                    <Linear>
+                        <Duration>02:22:30</Duration>
+                        <MediaFiles>
+                            <MediaFile id="mp4" height="1080" width="1920" bitrate="1024" type="video/mp4" delivery="streaming" scalable="true" maintainAspectRatio="false" apiFramework="html5"><![CDATA[http://cinema6.com/videos/ad.mp4]]></MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+                <Creative>
+                    <CompanionAds>
+                        <Companion height="250" width="300" id="555750">
+                            <HTMLResource><![CDATA[<A onClick="var i= new Image(1,1); i.src='http://app.scanscout.com/ssframework/log/log.png?a=logitemaction&RI=555750&CbC=1&CbF=true&EC=0&RC=0&SmC=2&CbM=1.0E-5&VI=736e6b13bad531dc476bc3612749bc35&admode=preroll&PRI=-4827170214961170629&RprC=0&ADsn=17&VcaI=192,197&RrC=1&VgI=736e6b13bad531dc476bc3612749bc35&AVI=142&Ust=ma&Uctry=us&CI=1223187&AC=4&PI=567&Udma=506&ADI=5748406&VclF=true';" HREF="http://target.com" target="_blank">
+                            <IMG SRC="http://media.scanscout.com/ads/target300x250Companion.jpg" BORDER=0 WIDTH=300 HEIGHT=250 ALT="Click Here">
+                            </A>
+                            <img src="http://app.scanscout.com/ssframework/log/log.png?a=logitemaction&RI=555750&CbC=1&CbF=true&EC=1&RC=0&SmC=2&CbM=1.0E-5&VI=736e6b13bad531dc476bc3612749bc35&admode=preroll&PRI=-4827170214961170629&RprC=0&ADsn=17&VcaI=192,197&RrC=1&VgI=736e6b13bad531dc476bc3612749bc35&AVI=142&Ust=ma&Uctry=us&CI=1223187&AC=4&PI=567&Udma=506&ADI=5748406&VclF=true" height="1" width="1">
+                            ]]></HTMLResource>
+                        </Companion>
+                    </CompanionAds>
+                </Creative>
+                <Creative id="my-creative" sequence="3">
+                    <NonLinearAds>
+                        <NonLinear width="970" height="250">
+                            <StaticResource creativeType="image/png"><![CDATA[http://cinema6.com/images/ad.png]]></StaticResource>
+                        </NonLinear>
+                        <TrackingEvents>
+                            <Tracking event="start"><![CDATA[http://cinema6.com/tracking/non-linear-start]]></Tracking>
+                        </TrackingEvents>
+                    </NonLinearAds>
+                </Creative>
+            </Creatives>
+        </Wrapper>
+    </Ad>
+</VAST>

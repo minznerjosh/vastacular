@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="2.0">
+    <Ad id="229">
+        <InLine>
+            <AdSystem>LiveRail</AdSystem>
+            <AdTitle><![CDATA[LiveRail creative 2]]></AdTitle>
+            <Impression><![CDATA[http://pr.ybp.yahoo.com/sync/liverail/3.1427315934667.3769710346467753322]]></Impression>
+            <Creatives>
+                <Creative>
+                    <Linear>
+                        <Duration>00:00:11</Duration>
+                        <MediaFiles>
+                            <MediaFile delivery="progressive" width="640" height="480" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/7969/lo.flv]]></MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+                <Creative>
+                    <CompanionAds>
+                        <Companion width="300" height="60">
+                            <StaticResource creativeType="application/x-shockwave-flash"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/7969/5122396e510b80db6b5ef4013ddabe90.swf]]></StaticResource>
+                        </Companion>
+                    </CompanionAds>
+                </Creative>
+                <Creative>
+                    <NonLinearAds>
+                        <NonLinear width="300" height="60">
+                            <IFrameResource><![CDATA[http://cdn.liverail.com/adasset/228/8455/overlay.html]]></IFrameResource>
+                        </NonLinear>
+                    </NonLinearAds>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+    <Ad id="602833">
+        <Wrapper>
+            <AdSystem>Acudeo Compatible</AdSystem>
+            <VASTAdTagURI>http://demo.tremormedia.com/proddev/vast/vast_inline_linear.xml</VASTAdTagURI>
+            <Impression>http://myTrackingURL/wrapper/impression</Impression>
+            <Creatives></Creatives>
+        </Wrapper>
+    </Ad>
+</VAST>
