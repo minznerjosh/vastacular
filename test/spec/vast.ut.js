@@ -1,7 +1,6 @@
 /* jshint latedef:nofunc */
 
 var VAST = require('../../lib/VAST');
-var jsonVAST = require('../../lib/pojo_from_xml')(require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString());
 var extend = require('../../lib/utils/extend');
 
 function deepArrayContaining(array) {
@@ -35,6 +34,12 @@ function deepObjectContaining(object) {
 }
 
 describe('VAST', function() {
+    var jsonVAST;
+
+    beforeEach(function() {
+        jsonVAST = require('../../lib/pojo_from_xml')(require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString());
+    });
+
     it('should exist', function() {
         expect(VAST).toEqual(jasmine.any(Function));
         expect(VAST.name).toBe('VAST');
@@ -199,6 +204,79 @@ describe('VAST', function() {
                     system: jasmine.objectContaining({ version: null }),
                     errors: []
                 }));
+            });
+        });
+
+        describe('methods:', function() {
+            describe('get(prop)', function() {
+                it('should get a property of the instance', function() {
+                    expect(vast.get('ads')).toBe(vast.ads);
+                });
+
+                it('should get nested properties', function() {
+                    expect(vast.get('ads[1].creatives[0].type')).toBe(vast.ads[1].creatives[0].type);
+                });
+
+                it('should return undefined if an object is undefined', function() {
+                    expect(vast.get('ads[1].creatives[33].type')).toBeUndefined();
+                    expect(vast.get('ads[0].creatives[0].mediaFiles[0].scalable.foo')).toBeUndefined();
+                });
+
+                it('should return itself is no prop is provided', function() {
+                    expect(vast.get()).toBe(vast);
+                    expect(vast.get(null)).toBe(vast);
+                    expect(vast.get('')).toBe(vast);
+                });
+            });
+
+            describe('set(prop, value)', function() {
+                var value;
+
+                beforeEach(function() {
+                    value = { foo: 'bar' };
+                });
+
+                it('should set a property of the instance', function() {
+                    expect(vast.set('test', value)).toBe(value);
+                    expect(vast.test).toBe(value);
+                });
+
+                it('should set nested properties', function() {
+                    var orig = vast.ads[1].creatives[0];
+                    vast.set('ads[1].creatives[0].type', value);
+
+                    expect(vast.ads[1].creatives[0].type).toBe(value);
+                    expect(vast.ads[1].creatives[0]).toBe(orig);
+                });
+
+                it('should create objects that don\'t exist along the way', function() {
+                    var creative = vast.ads[0].creatives[1];
+                    expect(vast.set('ads[0].creatives[1].foo.1.bar', value)).toBe(value);
+
+                    expect(vast.ads[0].creatives[1].foo[1].bar).toBe(value);
+                    expect(vast.ads[0].creatives[1].foo).toEqual({ '1': { bar: value } });
+                    expect(vast.ads[0].creatives[1]).toBe(creative);
+
+                    expect(vast.set('ads[10].foo', value)).toBe(value);
+                    expect(vast.ads[10].foo).toBe(value);
+                    expect(vast.ads[10]).toEqual({ foo: value });
+                });
+
+                it('should create Arrays that don\'t exist along the way', function() {
+                    expect(vast.set('ads[0].monkies[1]', value)).toBe(value);
+                    expect(vast.ads[0].monkies[1]).toBe(value);
+                    expect(vast.ads[0].monkies).toEqual(jasmine.any(Array));
+
+                    expect(vast.set('ads[10][1]', value)).toBe(value);
+                    expect(vast.ads[10][1]).toBe(value);
+                    expect(vast.ads[10]).toEqual(jasmine.any(Array));
+                });
+
+                it('should throw an error if no prop is provided', function() {
+                    var origKeys = Object.keys(vast);
+                    expect(function() { vast.set(); }).toThrow();
+                    expect(Object.keys(vast)).toEqual(origKeys);
+                });
             });
         });
     });
