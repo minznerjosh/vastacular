@@ -207,6 +207,38 @@ describe('VAST', function() {
             });
         });
 
+        describe('properties:', function() {
+            describe('wrappers', function() {
+                it('should be an array of all of the wrapper ads', function() {
+                    expect(vast.wrappers).toEqual(vast.filter('ads', function(ad) { return ad.type === 'wrapper'; }));
+                });
+
+                it('should return the same array instance each time', function() {
+                    expect(vast.wrappers).toBe(vast.wrappers);
+                });
+
+                it('should stay up-to-date', function() {
+                    vast.set('ads', vast.filter('ads', function(ad) { return ad.type !== 'wrapper'; }));
+                    expect(vast.wrappers).toEqual([]);
+                });
+            });
+
+            describe('inlines', function() {
+                it('should be an array of all of the inline ads', function() {
+                    expect(vast.inlines).toEqual(vast.filter('ads', function(ad) { return ad.type === 'inline'; }));
+                });
+
+                it('should return the same array instance each time', function() {
+                    expect(vast.inlines).toBe(vast.inlines);
+                });
+
+                it('should stay up-to-date', function() {
+                    vast.set('ads', vast.filter('ads', function(ad) { return ad.type !== 'inline'; }));
+                    expect(vast.inlines).toEqual([]);
+                });
+            });
+        });
+
         describe('methods:', function() {
             describe('get(prop)', function() {
                 it('should get a property of the instance', function() {
