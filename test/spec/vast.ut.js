@@ -389,6 +389,38 @@ describe('VAST', function() {
                     expect(vast.find('foo.bar[0].hello.world', predicate)).toBeUndefined();
                 });
             });
+
+            describe('toPOJO()', function() {
+                var expected;
+                var result;
+
+                beforeEach(function() {
+                    expected = (function() {
+                        var pojo = JSON.parse(JSON.stringify(vast));
+
+                        delete pojo.__private__;
+                        return pojo;
+                    }());
+                    result = vast.toPOJO();
+                });
+
+                it('should return the data as a POJO', function() {
+                    expect(result).toEqual(expected);
+                });
+            });
+
+            describe('copy()', function() {
+                var result;
+
+                beforeEach(function() {
+                    result = vast.copy();
+                });
+
+                it('should return a copy of the VAST', function() {
+                    expect(result).toEqual(vast);
+                    expect(result).not.toBe(vast);
+                });
+            });
         });
     });
 });
