@@ -278,6 +278,85 @@ describe('VAST', function() {
                     expect(Object.keys(vast)).toEqual(origKeys);
                 });
             });
+
+            describe('map(array, mapper)', function() {
+                var mapper;
+
+                beforeEach(function() {
+                    mapper = jasmine.createSpy('mapper()').and.callFake(function(object) { return object.type; });
+                });
+
+                it('should map an array', function() {
+                    expect(vast.map('ads[0].creatives', mapper)).toEqual(['linear', 'companions', 'nonLinear']);
+                    vast.get('ads[0].creatives').forEach(function(creative, index, array) {
+                        var call = mapper.calls.all()[index];
+                        expect(call.args).toEqual([creative, index, array]);
+                        expect(call.object).toBe(vast);
+                    });
+                });
+
+                it('should return an Array if given a reference to a non-array', function() {
+                    expect(vast.map('ads[0]', mapper)).toEqual([]);
+                    expect(vast.map('ads[0].creatives[0].type', mapper)).toEqual([]);
+                    expect(vast.map('foo.bar[0].hello.world', mapper)).toEqual([]);
+                });
+            });
+
+            describe('filter(array, predicate)', function() {
+                var predicate;
+
+                beforeEach(function() {
+                    predicate = jasmine.createSpy('predicate()').and.callFake(function(event) { return (/creativeView|midpoint/).test(event.event); });
+                });
+
+                it('should filter an array', function() {
+                    expect(vast.filter('ads[0].creatives[0].trackingEvents', predicate)).toEqual([
+                        { event: 'creativeView', uri: 'http://myTrackingURL/creativeView' },
+                        { event: 'midpoint', uri: 'http://myTrackingURL/midpoint' }
+                    ]);
+                    vast.get('ads[0].creatives[0].trackingEvents').forEach(function(event, index, array) {
+                        var call = predicate.calls.all()[index];
+                        expect(call.args).toEqual([event, index, array]);
+                        expect(call.object).toBe(vast);
+                    });
+                });
+
+                it('should return an array if given an reference to a non-array', function() {
+                    predicate.and.returnValue(true);
+                    expect(vast.filter('ads[0]', predicate)).toEqual([]);
+                    expect(vast.filter('ads[0].creatives[0].type', predicate)).toEqual([]);
+                    expect(vast.filter('foo.bar[0].hello.world', predicate)).toEqual([]);
+                });
+            });
+
+            describe('find(array, predicate)', function() {
+                var predicate;
+
+                beforeEach(function() {
+                    predicate = jasmine.createSpy('predicate()').and.callFake(function(creative) { return creative.type === 'companions'; });
+                });
+
+                it('should find an item in an array', function() {
+                    expect(vast.find('ads[0].creatives', predicate)).toBe(vast.get('ads[0].creatives[1]'));
+                    expect(predicate.calls.count()).toBe(2);
+                    predicate.calls.all().forEach(function(call, index) {
+                        expect(call.args).toEqual([vast.get('ads[0].creatives')[index], index, vast.get('ads[0].creatives')]);
+                        expect(call.object).toBe(vast);
+                    });
+                });
+
+                it('should return undefined if the predicate never returns something truthy', function() {
+                    predicate.and.returnValue(false);
+                    expect(vast.find('ads[0].creatives', predicate)).toBeUndefined();
+                });
+
+                it('should return undefined if given an reference to a non-array', function() {
+                    predicate.and.returnValue(true);
+                    expect(vast.find('ads[0]', predicate)).toBeUndefined();
+                    expect(vast.find('ads[0].creatives[0].type', predicate)).toBeUndefined();
+                    expect(vast.find('foo.bar[0].hello.world', predicate)).toBeUndefined();
+                });
+            });
         });
     });
 });
