@@ -54,6 +54,202 @@ describe('VAST', function() {
                     expect(VAST.pojoFromXML).toBe(require('../../lib/pojo_from_xml'));
                 });
             });
+
+            describe('fetch(uri, options, cb)', function() {
+                var uri;
+                var result;
+                var requestDeferreds;
+                var success, failure;
+
+                beforeEach(function() {
+                    uri = 'http://cinema6.com/vast/some-tag.xml';
+                    requestDeferreds = {};
+
+                    success = jasmine.createSpy('success()');
+                    failure = jasmine.createSpy('failure()');
+
+                    spyOn(request, 'get').and.callFake(function(url) {
+                        var deferred = {};
+                        var req = {
+                            then: function(fulfill, reject) {
+                                deferred.resolve = fulfill;
+                                deferred.reject = reject;
+
+                                return this;
+                            },
+                            set: jasmine.createSpy('req.set()').and.callFake(function() {
+                                return this;
+                            })
+                        };
+
+                        requestDeferreds[url] = deferred;
+                        deferred.request = req;
+
+                        return req;
+                    });
+
+                    result = VAST.fetch(uri);
+                    result.then(success, failure);
+                });
+
+                it('should return a LiePromise', function() {
+                    expect(result).toEqual(jasmine.any(LiePromise));
+                });
+
+                it('should make a network request for the provided URI', function() {
+                    expect(request.get).toHaveBeenCalledWith(uri);
+                    expect(requestDeferreds[uri].request.set).toHaveBeenCalledWith({});
+                });
+
+                describe('if the request is successful', function() {
+                    var vastXML, vast;
+
+                    beforeEach(function(done) {
+                        vastXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString();
+                        vast = new VAST(VAST.pojoFromXML(vastXML));
+
+                        requestDeferreds[uri].resolve({ text: vastXML });
+                        result.then(done, done);
+                    });
+
+                    it('should fulfill the promise with a VAST object', function() {
+                        expect(success).toHaveBeenCalledWith(vast);
+                    });
+                });
+
+                describe('if the request fails', function() {
+                    var reason;
+
+                    beforeEach(function(done) {
+                        reason = new Error('Network error.');
+                        requestDeferreds[uri].reject(reason);
+                        result.then(done, done);
+                    });
+
+                    it('should be rejected with the reason', function() {
+                        expect(failure).toHaveBeenCalledWith(reason);
+                    });
+                });
+
+                describe('if options.resolveWrappers is true', function() {
+                    var vastXML, vast;
+
+                    beforeEach(function() {
+                        vastXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString();
+                        vast = new VAST(VAST.pojoFromXML(vastXML));
+
+                        result = VAST.fetch(uri, { resolveWrappers: true, maxRedirects: 10 });
+                        result.then(success, failure);
+                    });
+
+                    describe('when the VAST is fetched', function() {
+                        beforeEach(function(done) {
+                            spyOn(VAST.prototype, 'resolveWrappers').and.callThrough();
+                            requestDeferreds[uri].resolve({ text: vastXML });
+                            setTimeout(done, 5);
+                        });
+
+                        it('should call resolveWrappers() on the VAST object it creates', function() {
+                            expect(VAST.prototype.resolveWrappers).toHaveBeenCalledWith(10);
+                            expect(VAST.prototype.resolveWrappers.calls.mostRecent().object.toPOJO()).toEqual(vast.toPOJO());
+                        });
+
+                        describe('when the wrapper is fetched', function() {
+                            var expected;
+                            var inlineXML;
+
+                            beforeEach(function(done) {
+                                inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline1.xml')).toString();
+                                requestDeferreds[vast.get('wrappers[0].vastAdTagURI')].resolve({ text: inlineXML });
+
+                                vast.resolveWrappers().then(function(_expected_) {
+                                    expected = _expected_;
+                                });
+                                requestDeferreds[vast.get('wrappers[0].vastAdTagURI')].resolve({ text: inlineXML });
+
+                                result.then(done, done);
+                            });
+
+                            it('should return the resolved VAST', function() {
+                                expect(success).toHaveBeenCalledWith(expected);
+                            });
+                        });
+                    });
+                });
+
+                describe('if options.headers is provided', function() {
+                    beforeEach(function() {
+                        VAST.fetch(uri, { headers: { 'API-Key': 'foobar', Accept: 'application/json' } });
+                    });
+
+                    it('should make a request with the provided headers', function() {
+                        expect(request.get).toHaveBeenCalledWith(uri);
+                        expect(requestDeferreds[uri].request.set).toHaveBeenCalledWith({ 'API-Key': 'foobar', Accept: 'application/json' });
+                    });
+                });
+
+                describe('if a callback is provided', function() {
+                    var value, reason;
+                    var callback;
+                    var promise;
+
+                    beforeEach(function() {
+                        callback = jasmine.createSpy('callback()');
+
+                        promise = VAST.fetch(uri, null, callback).then(function(_value_) {
+                            value = _value_;
+                        }, function(_reason_) {
+                            reason = _reason_;
+                        });
+                    });
+
+                    describe('when the promise is fulfilled', function() {
+                        var vastXML;
+
+                        beforeEach(function(done) {
+                            vastXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString();
+                            requestDeferreds[uri].resolve({ text: vastXML });
+                            promise.then(done, done);
+                        });
+
+                        it('should call the callback', function() {
+                            expect(callback).toHaveBeenCalledWith(null, value);
+                        });
+                    });
+
+                    describe('when the promise is rejected', function() {
+                        beforeEach(function(done) {
+                            reason = new Error('Error');
+                            requestDeferreds[uri].reject(reason);
+                            promise.then(done, done);
+                        });
+
+                        it('should call the callback', function() {
+                            expect(callback).toHaveBeenCalledWith(reason);
+                        });
+                    });
+                });
+
+                describe('if only a callback is provided', function() {
+                    var callback;
+
+                    beforeEach(function(done) {
+                        callback = jasmine.createSpy('callback()');
+                        callback.headers = { 'foo': 'bar' };
+
+                        VAST.fetch(uri, callback).then(done, done);
+                        requestDeferreds[uri].reject(new Error('Problem'));
+                    });
+
+                    it('should call the callback', function() {
+                        expect(callback).toHaveBeenCalled();
+                    });
+
+                    it('should not treat the callback as an options object', function() {
+                        expect(requestDeferreds[uri].request.set).toHaveBeenCalledWith({});
+                    });
+                });
+            });
         });
     });
 
