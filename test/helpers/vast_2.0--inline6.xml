@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="2.0">
+    <Ad id="229">
+        <InLine>
+            <AdSystem version="LR_DELIVERY_VERSION">LiveRail</AdSystem>
+            <AdTitle><![CDATA[LiveRail creative 1]]></AdTitle>
+            <Description />
+            <Error><![CDATA[http://t4.liverail.com/?metric=error&erc=[ERRORCODE]&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=]]></Error>
+            <Impression id="LR"><![CDATA[http://t4.liverail.com/?metric=impression&cofl=0&flid=0&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=121&y=121&xy=0b79&z2=0.00100]]></Impression>
+            <Impression id="QC"><![CDATA[http://pixel.quantserve.com/pixel/p-d05JkuPGiy-jY.gif?r=2637]]></Impression>
+            <Impression id="CS"><![CDATA[http://b.scorecardresearch.com/p?c1=1&c2=9864668&c3=1331&c4=&c5=09]]></Impression>
+            <Impression><![CDATA[http://ana-ent-imp.com]]></Impression>
+            <Impression><![CDATA[http://load.exelator.com/load/?p=104&g=440&j=0]]></Impression>
+            <Impression><![CDATA[http://navdmp.com/usr?vast=http%3A%2F%2Ft4.liverail.com%2F%3Fmetric%3Dmsync%26p%3D78]]></Impression>
+            <Impression><![CDATA[http://t4.liverail.com/?metric=rsync&p=1002&redirect=http%3A%2F%2Ftags.bluekai.com%2Fsite%2F13233%3Fid%3D3.1427315934667.3769710346467753322]]></Impression>
+            <Impression><![CDATA[http://t4.liverail.com/?metric=rsync&p=1003&redirect=http%3A%2F%2Fbcp.crwdcntrl.net%2Fmap%2Fc%3D936%2Ftp%3DRAIL%2Ftpid%3D3.1427315934667.3769710346467753322]]></Impression>
+            <Impression><![CDATA[http://pix04.revsci.net/J13421/a1/0/3/0.gif?DM_LOC=http%3A%2F%2Fliverail.com%2F0.gif%3Fid%3D3.1427315934667.3769710346467753322]]></Impression>
+            <Impression><![CDATA[http://t4.liverail.com/?metric=rsync&p=3036&redirect=http%3A%2F%2Flir.sync.yume.com%2Ftracker%2Fdynamic_ytrack_sync%3Fseat%3D63690%26redirect%3Dhttp%253A%252F%252Ft4.liverail.com%252F%253Fmetric%253Dcsync%2526p%253D3036%2526s%253D%2524%257BUSER_ID%257D]]></Impression>
+            <Impression><![CDATA[http://n.us1.dyntrk.com/adx/lr/sync_lr.php?lrid=3.1427315934667.3769710346467753322]]></Impression>
+            <Impression><![CDATA[http://pr.ybp.yahoo.com/sync/liverail/3.1427315934667.3769710346467753322]]></Impression>
+            <Creatives>
+                <Creative sequence="1" id="331">
+                    <Linear>
+                        <Duration>00:00:11</Duration>
+                        <TrackingEvents>
+                            <Tracking event="firstQuartile"><![CDATA[http://t4.liverail.com/?metric=view25&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="midpoint"><![CDATA[http://t4.liverail.com/?metric=view50&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="thirdQuartile"><![CDATA[http://t4.liverail.com/?metric=view75&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="complete"><![CDATA[http://t4.liverail.com/?metric=view100&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="mute"><![CDATA[http://t4.liverail.com/?metric=mute&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="unmute"><![CDATA[http://t4.liverail.com/?metric=unmute&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="pause"><![CDATA[http://t4.liverail.com/?metric=pause&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="resume"><![CDATA[http://t4.liverail.com/?metric=resume&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="fullscreen"><![CDATA[http://t4.liverail.com/?metric=fullscreen&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="close"><![CDATA[http://t4.liverail.com/?metric=close&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="acceptInvitation"><![CDATA[http://t4.liverail.com/?metric=accept&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                        </TrackingEvents>
+                        <VideoClicks>
+                            <ClickThrough><![CDATA[http://t4.liverail.com/?metric=clickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fliverail.com%2F]]></ClickThrough>
+                            <ClickTracking><![CDATA[http://ana-ent-click.com]]></ClickTracking>
+                        </VideoClicks>
+                        <MediaFiles>
+                            <MediaFile delivery="progressive" bitrate="256" width="480" height="352" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.flv]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="256" width="640" height="360" type="video/x-ms-wmv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.wmv]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="400" width="320" height="180" type="video/mp4"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.mp4]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="400" width="320" height="180" type="video/webm"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/lo.webm]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="512" width="480" height="352" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.flv]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="512" width="640" height="360" type="video/x-ms-wmv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.wmv]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="600" width="640" height="480" type="video/mp4"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.mp4]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="600" width="640" height="480" type="video/webm"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/me.webm]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="1024" width="480" height="352" type="video/mp4"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.mp4]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="1024" width="480" height="352" type="video/webm"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.webm]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="1024" width="480" height="352" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.flv]]></MediaFile>
+                            <MediaFile delivery="progressive" bitrate="1024" width="640" height="360" type="video/x-ms-wmv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/hi.wmv]]></MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+                <Creative sequence="1" id="331">
+                    <CompanionAds>
+                        <Companion width="300" height="60">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/229/331/300x60.jpg]]></StaticResource>
+                            <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+                        <Companion width="300" height="250">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/229/331/300x250.jpg]]></StaticResource>
+                            <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+                        <Companion width="728" height="90">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/331/e325b87ef48ec343e4a5d807f094fc39.jpg]]></StaticResource>
+                            <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=0&coid=135&pid=1331&nid=1331&oid=229&olid=2291331&cid=331&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db4357a71740.02122297.vp.feature_lookup.1.qe_default&bidf=0.1&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=2637.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+                    </CompanionAds>
+                </Creative>
+                <Creative sequence="1" id="8455">
+                    <NonLinearAds>
+                        <NonLinear width="300" height="60">
+                            <StaticResource creativeType="image/png"><![CDATA[http://cdn.liverail.com/adasset/228/8455/overlay.png]]></StaticResource>
+                            <NonLinearClickThrough><![CDATA[http://t4.liverail.com/?metric=clickthru&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db446a1e7c15.63459369.vp.control.1.fbl_model_backtest.xlog&bidf=0&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7906.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></NonLinearClickThrough>
+                        </NonLinear>
+                        <TrackingEvents>
+                            <Tracking event="acceptInvitation"><![CDATA[http://t4.liverail.com/?metric=accept&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db446a1e7c15.63459369.vp.control.1.fbl_model_backtest.xlog&bidf=0&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7906.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            <Tracking event="clickthru"><![CDATA[http://ana-ent-click.com]]></Tracking>
+                            <Tracking event="collapse"><![CDATA[http://t4.liverail.com/?metric=minimize&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db446a1e7c15.63459369.vp.control.1.fbl_model_backtest.xlog&bidf=0&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7906.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                        </TrackingEvents>
+                    </NonLinearAds>
+                </Creative>
+                <Creative sequence="1" id="8455">
+                    <CompanionAds>
+                        <Companion width="300" height="60">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/228/8455/300x60.jpg]]></StaticResource>
+                            <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db446a1e7c15.63459369.vp.control.1.fbl_model_backtest.xlog&bidf=0&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7906.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db446a1e7c15.63459369.vp.control.1.fbl_model_backtest.xlog&bidf=0&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7906.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+                        <Companion width="300" height="250">
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://cdn.liverail.com/adasset/228/8455/300x250.jpg]]></StaticResource>
+                            <TrackingEvents>
+                                <Tracking event="creativeView"><![CDATA[http://t4.liverail.com/?metric=companion&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db446a1e7c15.63459369.vp.control.1.fbl_model_backtest.xlog&bidf=0&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7906.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=]]></Tracking>
+                            </TrackingEvents>
+                            <CompanionClickThrough><![CDATA[http://t4.liverail.com/?metric=cclickthru&pos=1&coid=135&pid=1331&nid=1331&oid=228&olid=2281331&cid=8455&tpcid=&vid=&amid=&cc=default&pp=&vi=0&vv=&sg=&tsg=&pmu=0&pau=0&psz=0&ctx=&tctx=&coty=7&adt=0&did=&buid=&scen=&mca=&mma=&mct=0&url=http%3A%2F%2Fwww.iab.net%2Fguidelines%2F508676%2Fdigitalvideo%2Fvsuite%2Fvast%2Fvast_copy%2Fvast_xml_samples&trid=55db446a1e7c15.63459369.vp.control.1.fbl_model_backtest.xlog&bidf=0&bids=0&bidt=1&bidh=0&bidlaf=0&sdk=0&cb=7906.50.248.181.150.0&ver=1&mapp=0&plid=&plt=1&plm=2&pls=0&w=0&wy=&x=&y=&xy=&redirect=http%3A%2F%2Fwww.liverail.com]]></CompanionClickThrough>
+                        </Companion>
+                    </CompanionAds>
+                </Creative>
+                <Creative AdID="602678-NonLinear">
+                    <NonLinearAds>
+                        <TrackingEvents>
+                            <Tracking event="creativeView">http://myTrackingURL/nonlinear/creativeView</Tracking>
+                            <Tracking event="expand">http://myTrackingURL/nonlinear/expand</Tracking>
+                            <Tracking event="collapse">http://myTrackingURL/nonlinear/collapse</Tracking>
+                            <Tracking event="acceptInvitation">http://myTrackingURL/nonlinear/acceptInvitation</Tracking>
+                            <Tracking event="close">http://myTrackingURL/nonlinear/close</Tracking>
+                        </TrackingEvents>
+                        <NonLinear height="50" width="300" minSuggestedDuration="00:00:15">
+                            <StaticResource creativeType="image/jpeg">http://demo.tremormedia.com/proddev/vast/50x300_static.jpg</StaticResource>
+                            <NonLinearClickThrough>http://www.tremormedia.com</NonLinearClickThrough>
+                        </NonLinear>
+                        <NonLinear height="50" width="450" minSuggestedDuration="00:00:20">
+                            <StaticResource creativeType="image/jpeg">http://demo.tremormedia.com/proddev/vast/50x450_static.jpg</StaticResource>
+                            <NonLinearClickThrough>http://www.tremormedia.com</NonLinearClickThrough>
+                        </NonLinear>
+                    </NonLinearAds>
+                </Creative>
+                <Creative AdID="601364">
+                    <Linear>
+                        <Duration>00:00:30</Duration>
+                        <TrackingEvents>
+                            <Tracking event="creativeView">http://myTrackingURL/creativeView</Tracking>
+                            <Tracking event="start">http://myTrackingURL/start</Tracking>
+                            <Tracking event="midpoint">http://myTrackingURL/midpoint</Tracking>
+                            <Tracking event="firstQuartile">http://myTrackingURL/firstQuartile</Tracking>
+                            <Tracking event="thirdQuartile">http://myTrackingURL/thirdQuartile</Tracking>
+                            <Tracking event="complete">http://myTrackingURL/complete</Tracking>
+                        </TrackingEvents>
+                        <VideoClicks>
+                            <ClickThrough>http://www.tremormedia.com</ClickThrough>
+                            <ClickTracking>http://myTrackingURL/click</ClickTracking>
+                        </VideoClicks>
+                        <MediaFiles>
+                            <MediaFile delivery="progressive" type="video/x-flv" bitrate="500" width="400" height="300" scalable="true" maintainAspectRatio="true">http://cdnp.tremormedia.com/video/acudeo/Carrot_400x300_500kb.flv</MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+            </Creatives>
+            <Extensions />
+        </InLine>
+    </Ad>
+</VAST>
+<!-- 32 {US_NEWJERSEY_PHILADELPHIA_PRINCETON} {08540} -->
