@@ -2,6 +2,8 @@
 
 var VAST = require('../../lib/VAST');
 var extend = require('../../lib/utils/extend');
+var LiePromise = require('lie');
+var request = require('superagent');
 
 function deepArrayContaining(array) {
     return jasmine.arrayContaining(array.map(function(item) {
@@ -419,6 +421,740 @@ describe('VAST', function() {
                 it('should return a copy of the VAST', function() {
                     expect(result).toEqual(vast);
                     expect(result).not.toBe(vast);
+                });
+            });
+
+            describe('resolveWrappers()', function() {
+                var success, failure;
+                var requestDeferreds;
+                var result;
+
+                beforeEach(function() {
+                    success = jasmine.createSpy('success()');
+                    failure = jasmine.createSpy('failure()');
+
+                    requestDeferreds = {};
+
+                    vast = new VAST({
+                        version: '2.0',
+                        ads: [
+                            {
+                                id: '1',
+                                type: 'wrapper',
+                                vastAdTagURI: 'http://cinema6.com/tags/vast1.xml',
+                                system: { name: 'ad-server' },
+                                creatives: [],
+                                impressions: []
+                            },
+                            {
+                                id: '2',
+                                type: 'inline',
+                                system: { name: 'ad-server' },
+                                title: 'My Ad',
+                                impressions: [{ uri: 'http://cinema6.com/pixels/impression' }],
+                                creatives: [
+                                    {
+                                        type: 'linear',
+                                        duration: 30,
+                                        mediaFiles: [{ uri: 'video.mp4', type: 'video/mp4' }]
+                                    }
+                                ]
+                            },
+                            {
+                                id: '3',
+                                type: 'wrapper',
+                                vastAdTagURI: 'http://cinema6.com/tags/vast2.xml',
+                                system: { name: 'ad-server' },
+                                impressions: [],
+                                creatives: []
+                            }
+                        ]
+                    });
+
+                    spyOn(request, 'get').and.callFake(function(url) {
+                        var deferred = {};
+                        var req = {
+                            then: function(fulfill, reject) {
+                                deferred.resolve = fulfill;
+                                deferred.reject = reject;
+
+                                return this;
+                            }
+                        };
+
+                        requestDeferreds[url] = deferred;
+
+                        return req;
+                    });
+
+                    result = vast.resolveWrappers();
+                    result.then(success, failure);
+                });
+
+                it('should return a LiePromise', function() {
+                    expect(result).toEqual(jasmine.any(LiePromise));
+                });
+
+                it('should make a request for the tags', function() {
+                    expect(request.get).toHaveBeenCalledWith(vast.ads[0].vastAdTagURI);
+                    expect(request.get).toHaveBeenCalledWith(vast.ads[2].vastAdTagURI);
+                    expect(request.get.calls.count()).toBe(2);
+                });
+
+                describe('if a callback is provided', function() {
+                    var callback;
+                    var promise;
+                    var value, reason;
+
+                    beforeEach(function() {
+                        callback = jasmine.createSpy('callback()');
+                        promise = vast.resolveWrappers(Infinity, callback).then(function(_value_) {
+                            value = _value_;
+                        }, function(_reason_) {
+                            reason = _reason_;
+                        });
+                    });
+
+                    describe('when the tags are fetched', function() {
+                        var vastXML1, vastXML2;
+
+                        beforeEach(function(done) {
+                            vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline1.xml')).toString();
+                            vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+
+                            requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+                            requestDeferreds[vast.ads[2].vastAdTagURI].resolve({ text: vastXML2 });
+
+                            promise.then(done, done);
+                        });
+
+                        it('should call the callback with the value', function() {
+                            expect(callback).toHaveBeenCalledWith(null, value);
+                        });
+                    });
+
+                    describe('if there is a problem', function() {
+                        beforeEach(function(done) {
+                            reason = new Error('Stuff is bad.');
+                            requestDeferreds[vast.ads[2].vastAdTagURI].reject(reason);
+
+                            promise.then(done, done);
+                        });
+
+                        it('should call the callback with the reason', function() {
+                            expect(callback).toHaveBeenCalledWith(reason);
+                        });
+                    });
+
+                    describe('and it is the only argument', function() {
+                        beforeEach(function(done) {
+                            callback.calls.reset();
+                            vast.resolveWrappers(callback).then(done, done);
+                            requestDeferreds[vast.ads[0].vastAdTagURI].reject(new Error('BOO!'));
+                        });
+
+                        it('should still be called', function() {
+                            expect(callback).toHaveBeenCalledWith(jasmine.any(Error));
+                        });
+                    });
+                });
+
+                describe('when the tags are fetched', function() {
+                    var vastXML1, vastXML2;
+                    var vast1, vast2;
+
+                    beforeEach(function(done) {
+                        vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline1.xml')).toString();
+                        vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                        vast1 = new VAST(VAST.pojoFromXML(vastXML1));
+                        vast2 = new VAST(VAST.pojoFromXML(vastXML2));
+
+                        requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+                        requestDeferreds[vast.ads[2].vastAdTagURI].resolve({ text: vastXML2 });
+
+                        setTimeout(done, 5);
+                    });
+
+                    it('should fulfill the promise with a VAST that inlines the returned VAST', function() {
+                        var expected = vast.copy();
+                        expected.set('ads', vast1.ads.concat([vast.get('ads[1]')], vast2.ads));
+
+                        expect(success).toHaveBeenCalledWith(expected);
+                    });
+                });
+
+                describe('if a request fails', function() {
+                    var error;
+
+                    beforeEach(function(done) {
+                        error = new Error('404: Not found');
+                        requestDeferreds[vast.ads[2].vastAdTagURI].reject(error);
+
+                        setTimeout(done, 5);
+                    });
+
+                    it('should reject with an error', function() {
+                        expect(failure).toHaveBeenCalledWith(error);
+                    });
+                });
+
+                describe('if another wrapper is returned', function() {
+                    var vastXML1, vastXML2;
+                    var vast1, vast2;
+
+                    beforeEach(function(done) {
+                        vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper1.xml')).toString();
+                        vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                        vast1 = new VAST(VAST.pojoFromXML(vastXML1));
+                        vast2 = new VAST(VAST.pojoFromXML(vastXML2));
+
+                        requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+                        requestDeferreds[vast.ads[2].vastAdTagURI].resolve({ text: vastXML2 });
+
+                        setTimeout(done, 5);
+                    });
+
+                    it('should not fulfill the promise', function() {
+                        expect(success).not.toHaveBeenCalled();
+                    });
+
+                    it('should make a request for the next tag', function() {
+                        expect(request.get).toHaveBeenCalledWith(vast1.wrappers[0].vastAdTagURI);
+                    });
+
+                    describe('when the request for the next tag succeeds', function() {
+                        var vastXML3;
+                        var vast3;
+
+                        beforeEach(function(done) {
+                            vastXML3 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline3.xml')).toString();
+                            vast3 = new VAST(VAST.pojoFromXML(vastXML3));
+
+                            requestDeferreds[vast1.wrappers[0].vastAdTagURI].resolve({ text: vastXML3 });
+
+                            setTimeout(done, 5);
+                        });
+
+                        it('should fulfill the promise with the wrapper-free vast', function() {
+                            var expected = vast.copy();
+                            expected.set('ads', vast3.ads.concat([vast.get('ads[1]')], vast2.ads));
+
+                            expect(success).toHaveBeenCalledWith(expected);
+                        });
+                    });
+                });
+
+                describe('if the wrapper includes creatives', function() {
+                    var result;
+
+                    describe('and there are the same amount of creatives in the response', function() {
+                        var inlineXML;
+                        var inline;
+
+                        beforeEach(function(done) {
+                            vast = new VAST({
+                                version: '2.0',
+                                ads: [
+                                    {
+                                        id: '1',
+                                        type: 'wrapper',
+                                        vastAdTagURI: 'http://cinema6.com/tags/vast1.xml',
+                                        system: { name: 'ad-server' },
+                                        impressions: [{ uri: 'http://cinema6.com/pixels/impression' }],
+                                        errors: ['http://cinema6.com/pixels/error'],
+                                        creatives: [
+                                            {
+                                                type: 'linear',
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete' }
+                                                ],
+                                                videoClicks: {
+                                                    clickThrough: 'http://cinema6.com/',
+                                                    clickTrackings: ['http://cinema6.com/pixels/click'],
+                                                    customClicks: [
+                                                        { id: 'foo', uri: 'http://cinema6.com/foo' }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                type: 'linear',
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView2' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete2' }
+                                                ],
+                                                videoClicks: {
+                                                    clickTrackings: ['http://cinema6.com/pixels/click']
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            });
+
+                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline4.xml')).toString();
+                            inline = new VAST(VAST.pojoFromXML(inlineXML));
+
+                            vast.resolveWrappers().then(function(_result_) {
+                                result = _result_;
+                            }).then(done, done);
+
+                            requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: inlineXML });
+                        });
+
+                        it('should merge the impressions and errors', function() {
+                            expect(result.get('ads[0].impressions')).toEqual(inline.get('ads[0].impressions').concat(vast.get('ads[0].impressions')));
+                            expect(result.get('ads[0].errors')).toEqual(inline.get('ads[0].errors').concat(vast.get('ads[0].errors')));
+                        });
+
+                        it('should extend the inline VAST with the creatives from the wrapper', function() {
+                            expect(result.get('ads[0].creatives[0].type')).toBe('linear');
+                            expect(result.get('ads[0].creatives[0].trackingEvents')).toEqual(inline.get('ads[0].creatives[0].trackingEvents').concat(vast.get('ads[0].creatives[0].trackingEvents')));
+                            expect(result.get('ads[0].creatives[0].videoClicks.clickThrough')).toBe(inline.get('ads[0].creatives[0].videoClicks.clickThrough'));
+                            expect(result.get('ads[0].creatives[0].videoClicks.clickTrackings')).toEqual(inline.get('ads[0].creatives[0].videoClicks.clickTrackings').concat(vast.get('ads[0].creatives[0].videoClicks.clickTrackings')));
+                            expect(result.get('ads[0].creatives[0].videoClicks.customClicks')).toEqual(vast.get('ads[0].creatives[0].videoClicks.customClicks'));
+
+                            expect(result.get('ads[0].creatives[1].type')).toBe('linear');
+                            expect(result.get('ads[0].creatives[1].trackingEvents')).toEqual(vast.get('ads[0].creatives[1].trackingEvents').concat(inline.get('ads[0].creatives[1].trackingEvents')));
+                            expect(result.get('ads[0].creatives[1].videoClicks.clickThrough')).toBe(inline.get('ads[0].creatives[1].videoClicks.clickThrough'));
+                            expect(result.get('ads[0].creatives[1].videoClicks.clickTrackings')).toEqual(vast.get('ads[0].creatives[1].videoClicks.clickTrackings').concat(inline.get('ads[0].creatives[1].videoClicks.clickTrackings')));
+                        });
+                    });
+
+                    describe('and there are fewer creatives in the response', function() {
+                        var inlineXML;
+                        var inline;
+
+                        beforeEach(function(done) {
+                            vast = new VAST({
+                                version: '2.0',
+                                ads: [
+                                    {
+                                        id: '1',
+                                        type: 'wrapper',
+                                        vastAdTagURI: 'http://cinema6.com/tags/vast1.xml',
+                                        system: { name: 'ad-server' },
+                                        impressions: [{ uri: 'http://cinema6.com/pixels/impression' }],
+                                        errors: ['http://cinema6.com/pixels/error'],
+                                        creatives: [
+                                            {
+                                                type: 'nonLinear',
+                                                ads: [
+                                                    { width: 970, height: 200, resources: [{ type: 'static', creativeType: 'image/png', data: 'http://cinema6.com/images/ad.png' }] }
+                                                ],
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete' }
+                                                ]
+                                            },
+                                            {
+                                                type: 'nonLinear',
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView2' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete2' }
+                                                ],
+                                                ads: []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            });
+
+                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline3.xml')).toString();
+                            inline = new VAST(VAST.pojoFromXML(inlineXML));
+
+                            vast.resolveWrappers().then(function(_result_) {
+                                result = _result_;
+                            }).then(done, done);
+
+                            requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: inlineXML });
+                        });
+
+                        it('should merge the impressions and errors', function() {
+                            result.get('ads').forEach(function(ad, index) {
+                                expect(ad.impressions).toEqual(inline.ads[index].impressions.concat(vast.get('ads[0].impressions')));
+                                expect(ad.errors).toEqual(inline.ads[index].errors.concat(vast.get('ads[0].errors')));
+                            });
+                        });
+
+                        it('should ignore the extra creatives', function() {
+                            var wrapperAd = vast.get('ads[0]');
+
+                            expect(result.get('ads.length')).toBe(inline.get('ads.length'));
+
+                            result.get('ads').forEach(function(ad, adIndex) {
+                                expect(ad.creatives.length).toBe(inline.ads[adIndex].creatives.length);
+
+                                ad.creatives.forEach(function(creative, creativeIndex) {
+                                    expect(creative.type).toBe(inline.ads[adIndex].creatives[creativeIndex].type);
+                                    expect(creative.ads).toEqual(inline.ads[adIndex].creatives[creativeIndex].ads.concat(wrapperAd.creatives[0].ads));
+                                    expect(creative.trackingEvents).toEqual(inline.ads[adIndex].creatives[creativeIndex].trackingEvents.concat(wrapperAd.creatives[0].trackingEvents));
+                                });
+                            });
+                        });
+                    });
+
+                    describe('and there are fewer creatives in the wrapper', function() {
+                        var inlineXML;
+                        var inline;
+
+                        beforeEach(function(done) {
+                            vast = new VAST({
+                                version: '2.0',
+                                ads: [
+                                    {
+                                        id: '1',
+                                        type: 'wrapper',
+                                        vastAdTagURI: 'http://cinema6.com/tags/vast1.xml',
+                                        system: { name: 'ad-server' },
+                                        impressions: [{ uri: 'http://cinema6.com/pixels/impression' }],
+                                        errors: ['http://cinema6.com/pixels/error'],
+                                        creatives: [
+                                            {
+                                                type: 'companions',
+                                                companions: [
+                                                    { width: 970, height: 200, resources: [{ type: 'static', creativeType: 'image/png', data: 'http://cinema6.com/images/ad.png' }], trackingEvents: [] }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            });
+
+                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline5.xml')).toString();
+                            inline = new VAST(VAST.pojoFromXML(inlineXML));
+
+                            vast.resolveWrappers().then(function(_result_) {
+                                result = _result_;
+                            }).then(done, done);
+
+                            requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: inlineXML });
+                        });
+
+                        it('should merge the impressions and errors', function() {
+                            expect(result.get('ads[0].impressions')).toEqual(inline.get('ads[0].impressions').concat(vast.get('ads[0].impressions')));
+                            expect(result.get('ads[0].errors')).toEqual(inline.get('ads[0].errors').concat(vast.get('ads[0].errors')));
+                        });
+
+                        it('should ignore the extra creatives', function() {
+                            expect(result.get('ads[0].creatives[0].companions')).toEqual(inline.get('ads[0].creatives[0].companions').concat(vast.get('ads[0].creatives[0].companions')));
+                            expect(result.get('ads[0].creatives[1]')).toEqual(inline.get('ads[0].creatives[1]'));
+                        });
+                    });
+
+                    describe('and there is an assortment of creative types', function() {
+                        var inlineXML;
+                        var inline;
+
+                        function typeIs(type) {
+                            return function checkType(creative) {
+                                return creative.type === type;
+                            };
+                        }
+
+                        beforeEach(function(done) {
+                            vast = new VAST({
+                                version: '2.0',
+                                ads: [
+                                    {
+                                        id: '1',
+                                        type: 'wrapper',
+                                        vastAdTagURI: 'http://cinema6.com/tags/vast1.xml',
+                                        system: { name: 'ad-server' },
+                                        impressions: [{ uri: 'http://cinema6.com/pixels/impression' }],
+                                        errors: ['http://cinema6.com/pixels/error'],
+                                        creatives: [
+                                            {
+                                                type: 'companions',
+                                                companions: [
+                                                    { width: 970, height: 200, resources: [{ type: 'static', creativeType: 'image/png', data: 'http://cinema6.com/images/ad.png' }], trackingEvents: [] }
+                                                ]
+                                            },
+                                            {
+                                                type: 'companions',
+                                                companions: [
+                                                    { width: 300, height: 250, resources: [{ type: 'static', creativeType: 'image/jpeg', data: 'http://cinema6.com/images/ad2.jpg' }], trackingEvents: [] }
+                                                ]
+                                            },
+                                            {
+                                                type: 'nonLinear',
+                                                ads: [
+                                                    { width: 970, height: 200, resources: [{ type: 'static', creativeType: 'image/png', data: 'http://cinema6.com/images/ad.png' }] }
+                                                ],
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete' }
+                                                ]
+                                            },
+                                            {
+                                                type: 'nonLinear',
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView2' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete2' }
+                                                ],
+                                                ads: []
+                                            },
+                                            {
+                                                type: 'linear',
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete' }
+                                                ],
+                                                videoClicks: {
+                                                    clickThrough: 'http://cinema6.com/',
+                                                    clickTrackings: ['http://cinema6.com/pixels/click'],
+                                                    customClicks: [
+                                                        { id: 'foo', uri: 'http://cinema6.com/foo' }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                type: 'linear',
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView2' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete2' }
+                                                ],
+                                                videoClicks: {
+                                                    clickTrackings: ['http://cinema6.com/pixels/click']
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            });
+
+                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline6.xml')).toString();
+                            inline = new VAST(VAST.pojoFromXML(inlineXML));
+
+                            vast.resolveWrappers().then(function(_result_) {
+                                result = _result_;
+                            }).then(done, done);
+
+                            requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: inlineXML });
+                        });
+
+                        it('should merge the impressions and errors', function() {
+                            expect(result.get('ads[0].impressions')).toEqual(inline.get('ads[0].impressions').concat(vast.get('ads[0].impressions')));
+                            expect(result.get('ads[0].errors')).toEqual(inline.get('ads[0].errors').concat(vast.get('ads[0].errors')));
+                        });
+
+                        it('should merge the companion ads', function() {
+                            var wrapperCompanions = vast.filter('ads[0].creatives', typeIs('companions'));
+                            var inlineCompanions = inline.filter('ads[0].creatives', typeIs('companions'));
+                            var resultCompanions = result.filter('ads[0].creatives', typeIs('companions'));
+
+                            expect(resultCompanions.length).toBe(inlineCompanions.length);
+                            resultCompanions.forEach(function(resultCompanion, index) {
+                                var wrapperCompanion = wrapperCompanions[index];
+                                var inlineCompanion = inlineCompanions[index];
+
+                                expect(resultCompanion.type).toBe(inlineCompanion.type);
+                                expect(resultCompanion.companions).toEqual(inlineCompanion.companions.concat(wrapperCompanion.companions));
+                            });
+                        });
+
+                        it('should merge the nonLinear ads', function() {
+                            var wrapperNonLinears = vast.filter('ads[0].creatives', typeIs('nonLinear'));
+                            var inlineNonLinears = inline.filter('ads[0].creatives', typeIs('nonLinear'));
+                            var resultNonLinears = result.filter('ads[0].creatives', typeIs('nonLinear'));
+
+                            expect(resultNonLinears.length).toBe(inlineNonLinears.length);
+                            resultNonLinears.forEach(function(resultNonLinear, index) {
+                                var wrapperNonLinear = wrapperNonLinears[index];
+                                var inlineNonLinear = inlineNonLinears[index];
+
+                                expect(resultNonLinear.type).toBe(inlineNonLinear.type);
+                                expect(resultNonLinear.ads).toEqual(inlineNonLinear.ads.concat(wrapperNonLinear.ads));
+                                expect(resultNonLinear.trackingEvents).toEqual(inlineNonLinear.trackingEvents.concat(wrapperNonLinear.trackingEvents));
+                            });
+                        });
+
+                        it('should merge the linear ads', function() {
+                            var wrapperLinears = vast.filter('ads[0].creatives', typeIs('linear'));
+                            var inlineLinears = inline.filter('ads[0].creatives', typeIs('linear'));
+                            var resultLinears = result.filter('ads[0].creatives', typeIs('linear'));
+
+                            expect(resultLinears.length).toBe(inlineLinears.length);
+                            resultLinears.forEach(function(resultLinear, index) {
+                                var wrapperLinear = wrapperLinears[index];
+                                var inlineLinear = inlineLinears[index];
+
+                                expect(resultLinear.type).toBe(inlineLinear.type);
+                                expect(resultLinear.trackingEvents).toEqual(inlineLinear.trackingEvents.concat(wrapperLinear.trackingEvents));
+                            });
+                        });
+                    });
+
+                    describe('and the wrapper returns another wrapper', function() {
+                        var wrapperXML, wrapper;
+                        var inlineXML, inline;
+
+                        beforeEach(function(done) {
+                            vast = new VAST({
+                                version: '2.0',
+                                ads: [
+                                    {
+                                        id: '1',
+                                        type: 'wrapper',
+                                        vastAdTagURI: 'http://cinema6.com/tags/vast1.xml',
+                                        system: { name: 'ad-server' },
+                                        impressions: [{ uri: 'http://cinema6.com/pixels/impression' }],
+                                        errors: ['http://cinema6.com/pixels/error'],
+                                        creatives: [
+                                            {
+                                                type: 'linear',
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete' }
+                                                ],
+                                                videoClicks: {
+                                                    clickThrough: 'http://cinema6.com/',
+                                                    clickTrackings: ['http://cinema6.com/pixels/click'],
+                                                    customClicks: [
+                                                        { id: 'foo', uri: 'http://cinema6.com/foo' }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                type: 'companions',
+                                                companions: [
+                                                    { width: 300, height: 250, resources: [{ type: 'static', creativeType: 'image/jpeg', data: 'http://cinema6.com/images/ad2.jpg' }], trackingEvents: [] }
+                                                ]
+                                            },
+                                            {
+                                                type: 'nonLinear',
+                                                ads: [
+                                                    { width: 970, height: 200, resources: [{ type: 'static', creativeType: 'image/png', data: 'http://cinema6.com/images/ad.png' }] }
+                                                ],
+                                                trackingEvents: [
+                                                    { event: 'creativeView', uri: 'http://cinema6.com/pixels/creativeView' },
+                                                    { event: 'complete', uri: 'http://cinema6.com/pixels/complete' }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            });
+
+                            wrapperXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper2.xml')).toString();
+                            wrapper = new VAST(VAST.pojoFromXML(wrapperXML));
+                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline7.xml')).toString();
+                            inline = new VAST(VAST.pojoFromXML(inlineXML));
+
+                            vast.resolveWrappers().then(function(_result_) {
+                                result = _result_;
+                            }).then(done, done);
+
+                            requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: wrapperXML });
+                            setTimeout(function() { requestDeferreds[wrapper.ads[0].vastAdTagURI].resolve({ text: inlineXML }); }, 5);
+                        });
+
+                        it('should combine the linear creatives', function() {
+                            expect(result.get('ads[0].creatives[0].trackingEvents')).toEqual(inline.get('ads[0].creatives[0].trackingEvents').concat(wrapper.get('ads[0].creatives[0].trackingEvents'), vast.get('ads[0].creatives[0].trackingEvents')));
+                            expect(result.get('ads[0].creatives[0].videoClicks.clickThrough')).toBe(inline.get('ads[0].creatives[0].videoClicks.clickThrough'));
+                            expect(result.get('ads[0].creatives[0].videoClicks.clickTrackings')).toEqual(inline.get('ads[0].creatives[0].videoClicks.clickTrackings').concat(vast.get('ads[0].creatives[0].videoClicks.clickTrackings')));
+                            expect(result.get('ads[0].creatives[0].videoClicks.customClicks')).toEqual(vast.get('ads[0].creatives[0].videoClicks.customClicks'));
+                        });
+
+                        it('should combine the companions', function() {
+                            expect(result.get('ads[0].creatives[1].companions')).toEqual(inline.get('ads[0].creatives[1].companions').concat(vast.get('ads[0].creatives[1].companions')));
+                        });
+
+                        it('should combine the nonLinear creatives', function() {
+                            expect(result.get('ads[0].creatives[2].ads')).toEqual(inline.get('ads[0].creatives[2].ads').concat(vast.get('ads[0].creatives[2].ads')));
+                            expect(result.get('ads[0].creatives[2].trackingEvents')).toEqual(inline.get('ads[0].creatives[2].trackingEvents').concat(wrapper.get('ads[0].creatives[1].trackingEvents'), vast.get('ads[0].creatives[2].trackingEvents')));
+                        });
+
+                        it('should combine the errors and impressions', function() {
+                            expect(result.get('ads[0].impressions')).toEqual(inline.get('ads[0].impressions').concat(wrapper.get('ads[0].impressions'), vast.get('ads[0].impressions')));
+                            expect(result.get('ads[0].errors')).toEqual(inline.get('ads[0].errors').concat(wrapper.get('ads[0].errors'), vast.get('ads[0].errors')));
+                        });
+                    });
+                });
+
+                describe('if maxRedirects is specified', function() {
+                    function wait(time) {
+                        return new LiePromise(function(resolve) {
+                            setTimeout(resolve, time || 0);
+                        });
+                    }
+
+                    beforeEach(function(done) {
+                        success = jasmine.createSpy('success()');
+                        failure = jasmine.createSpy('failure()');
+
+                        vast.resolveWrappers(4).then(success, failure);
+                        LiePromise.resolve().then(done);
+                    });
+
+                    it('should not resolve the promise', function() {
+                        expect(success).not.toHaveBeenCalled();
+                    });
+
+                    describe('before maxRedirects is exceeded', function() {
+                        var vastXML1, vastXML2;
+                        var vast1;
+
+                        beforeEach(function(done) {
+                            vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper1.xml')).toString();
+                            vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                            vast1 = new VAST(VAST.pojoFromXML(vastXML1));
+
+                            LiePromise.resolve().then(function() {
+                                requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+                                requestDeferreds[vast.ads[2].vastAdTagURI].resolve({ text: vastXML2 });
+
+                                return wait(5);
+                            }).then(function() {
+                                requestDeferreds[vast1.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+
+                                return wait(5);
+                            }).then(function() {
+                                requestDeferreds[vast1.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+
+                                return wait(5);
+                            }).then(done, done);
+                        });
+
+                        it('should not resolve or reject the promise', function() {
+                            expect(success).not.toHaveBeenCalled();
+                            expect(failure).not.toHaveBeenCalled();
+                        });
+                    });
+
+                    describe('when maxRedirects is exceeded', function() {
+                        var vastXML1, vastXML2;
+                        var vast1;
+
+                        beforeEach(function(done) {
+                            vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper1.xml')).toString();
+                            vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                            vast1 = new VAST(VAST.pojoFromXML(vastXML1));
+
+                            LiePromise.resolve().then(function() {
+                                requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+                                requestDeferreds[vast.ads[2].vastAdTagURI].resolve({ text: vastXML2 });
+
+                                return wait(5);
+                            }).then(function() {
+                                requestDeferreds[vast1.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+
+                                return wait(5);
+                            }).then(function() {
+                                requestDeferreds[vast1.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+
+                                return wait(5);
+                            }).then(function() {
+                                requestDeferreds[vast1.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
+
+                                return wait(5);
+                            }).then(done, done);
+                        });
+
+                        it('should reject the promise', function() {
+                            expect(failure).toHaveBeenCalledWith(new Error('Too many redirects were made.'));
+                        });
+                    });
                 });
             });
         });
