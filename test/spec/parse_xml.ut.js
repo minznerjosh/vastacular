@@ -1,7 +1,6 @@
-var path = require('path');
 var parseXML = require('../../lib/utils/parse_xml');
 var fs = require('fs');
-var exampleXML = fs.readFileSync(path.resolve(__dirname, '../helpers/example.xml')).toString();
+var exampleXML = fs.readFileSync(require.resolve('../helpers/example.xml')).toString();
 
 describe('parseXML(xml)', function() {
     var result;

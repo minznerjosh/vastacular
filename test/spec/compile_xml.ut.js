@@ -227,7 +227,7 @@ describe('compileXML(data, trim)', function() {
             ]
         };
 
-        expected = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/example.xml')).toString().trim();
+        expected = require('fs').readFileSync(require.resolve('../helpers/example.xml')).toString().trim();
     });
 
     it('should compile the JS object into a string of XML', function() {
@@ -266,7 +266,7 @@ describe('compileXML(data, trim)', function() {
                 ]
             };
 
-            expected = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/special.xml')).toString().trim();
+            expected = require('fs').readFileSync(require.resolve('../helpers/special.xml')).toString().trim();
         });
 
         it('should escape them', function() {
@@ -344,7 +344,7 @@ describe('compileXML(data, trim)', function() {
                 ]
             };
 
-            expected = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/trimmable.xml')).toString().trim();
+            expected = require('fs').readFileSync(require.resolve('../helpers/trimmable.xml')).toString().trim();
         });
 
         it('should remove elements and attributes with no values', function() {

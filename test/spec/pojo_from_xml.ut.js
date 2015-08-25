@@ -3,10 +3,8 @@ var parseXML = require('../../lib/utils/parse_xml');
 var timestampToSeconds = require('../../lib/utils/timestamp_to_seconds');
 var stringToBoolean = require('../../lib/utils/string_to_boolean');
 var trimObject = require('../../lib/utils/trim_object');
-var xml = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml'))
-    .toString();
-var minimalXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--minimal.xml'))
-    .toString();
+var xml = require('fs').readFileSync(require.resolve('../helpers/vast_2.0.xml')).toString();
+var minimalXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--minimal.xml')).toString();
 
 describe('pojoFromXML(xml)', function() {
     var pojo;

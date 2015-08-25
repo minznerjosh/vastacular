@@ -40,7 +40,7 @@ describe('VAST', function() {
     var xmlVAST;
 
     beforeEach(function() {
-        xmlVAST = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString().trim();
+        xmlVAST = require('fs').readFileSync(require.resolve('../helpers/vast_2.0.xml')).toString().trim();
         jsonVAST = require('../../lib/pojo_from_xml')(xmlVAST);
     });
 
@@ -107,7 +107,7 @@ describe('VAST', function() {
                     var vastXML, vast;
 
                     beforeEach(function(done) {
-                        vastXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString();
+                        vastXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0.xml')).toString();
                         vast = new VAST(VAST.pojoFromXML(vastXML));
 
                         requestDeferreds[uri].resolve({ text: vastXML });
@@ -137,7 +137,7 @@ describe('VAST', function() {
                     var vastXML, vast;
 
                     beforeEach(function() {
-                        vastXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString();
+                        vastXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0.xml')).toString();
                         vast = new VAST(VAST.pojoFromXML(vastXML));
 
                         result = VAST.fetch(uri, { resolveWrappers: true, maxRedirects: 10 });
@@ -161,7 +161,7 @@ describe('VAST', function() {
                             var inlineXML;
 
                             beforeEach(function(done) {
-                                inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline1.xml')).toString();
+                                inlineXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline1.xml')).toString();
                                 requestDeferreds[vast.get('wrappers[0].vastAdTagURI')].resolve({ text: inlineXML });
 
                                 vast.resolveWrappers().then(function(_expected_) {
@@ -209,7 +209,7 @@ describe('VAST', function() {
                         var vastXML;
 
                         beforeEach(function(done) {
-                            vastXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString();
+                            vastXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0.xml')).toString();
                             requestDeferreds[uri].resolve({ text: vastXML });
                             promise.then(done, done);
                         });
@@ -717,8 +717,8 @@ describe('VAST', function() {
                         var vastXML1, vastXML2;
 
                         beforeEach(function(done) {
-                            vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline1.xml')).toString();
-                            vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                            vastXML1 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline1.xml')).toString();
+                            vastXML2 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline2.xml')).toString();
 
                             requestDeferreds[vast.ads[0].vastAdTagURI].resolve({ text: vastXML1 });
                             requestDeferreds[vast.ads[2].vastAdTagURI].resolve({ text: vastXML2 });
@@ -762,8 +762,8 @@ describe('VAST', function() {
                     var vast1, vast2;
 
                     beforeEach(function(done) {
-                        vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline1.xml')).toString();
-                        vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                        vastXML1 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline1.xml')).toString();
+                        vastXML2 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline2.xml')).toString();
                         vast1 = new VAST(VAST.pojoFromXML(vastXML1));
                         vast2 = new VAST(VAST.pojoFromXML(vastXML2));
 
@@ -801,8 +801,8 @@ describe('VAST', function() {
                     var vast1, vast2;
 
                     beforeEach(function(done) {
-                        vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper1.xml')).toString();
-                        vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                        vastXML1 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--wrapper1.xml')).toString();
+                        vastXML2 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline2.xml')).toString();
                         vast1 = new VAST(VAST.pojoFromXML(vastXML1));
                         vast2 = new VAST(VAST.pojoFromXML(vastXML2));
 
@@ -825,7 +825,7 @@ describe('VAST', function() {
                         var vast3;
 
                         beforeEach(function(done) {
-                            vastXML3 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline3.xml')).toString();
+                            vastXML3 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline3.xml')).toString();
                             vast3 = new VAST(VAST.pojoFromXML(vastXML3));
 
                             requestDeferreds[vast1.wrappers[0].vastAdTagURI].resolve({ text: vastXML3 });
@@ -890,7 +890,7 @@ describe('VAST', function() {
                                 ]
                             });
 
-                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline4.xml')).toString();
+                            inlineXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline4.xml')).toString();
                             inline = new VAST(VAST.pojoFromXML(inlineXML));
 
                             vast.resolveWrappers().then(function(_result_) {
@@ -958,7 +958,7 @@ describe('VAST', function() {
                                 ]
                             });
 
-                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline3.xml')).toString();
+                            inlineXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline3.xml')).toString();
                             inline = new VAST(VAST.pojoFromXML(inlineXML));
 
                             vast.resolveWrappers().then(function(_result_) {
@@ -1019,7 +1019,7 @@ describe('VAST', function() {
                                 ]
                             });
 
-                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline5.xml')).toString();
+                            inlineXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline5.xml')).toString();
                             inline = new VAST(VAST.pojoFromXML(inlineXML));
 
                             vast.resolveWrappers().then(function(_result_) {
@@ -1121,7 +1121,7 @@ describe('VAST', function() {
                                 ]
                             });
 
-                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline6.xml')).toString();
+                            inlineXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline6.xml')).toString();
                             inline = new VAST(VAST.pojoFromXML(inlineXML));
 
                             vast.resolveWrappers().then(function(_result_) {
@@ -1234,9 +1234,9 @@ describe('VAST', function() {
                                 ]
                             });
 
-                            wrapperXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper2.xml')).toString();
+                            wrapperXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--wrapper2.xml')).toString();
                             wrapper = new VAST(VAST.pojoFromXML(wrapperXML));
-                            inlineXML = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline7.xml')).toString();
+                            inlineXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline7.xml')).toString();
                             inline = new VAST(VAST.pojoFromXML(inlineXML));
 
                             vast.resolveWrappers().then(function(_result_) {
@@ -1294,8 +1294,8 @@ describe('VAST', function() {
                         var vast1;
 
                         beforeEach(function(done) {
-                            vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper1.xml')).toString();
-                            vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                            vastXML1 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--wrapper1.xml')).toString();
+                            vastXML2 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline2.xml')).toString();
                             vast1 = new VAST(VAST.pojoFromXML(vastXML1));
 
                             LiePromise.resolve().then(function() {
@@ -1325,8 +1325,8 @@ describe('VAST', function() {
                         var vast1;
 
                         beforeEach(function(done) {
-                            vastXML1 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--wrapper1.xml')).toString();
-                            vastXML2 = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--inline2.xml')).toString();
+                            vastXML1 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--wrapper1.xml')).toString();
+                            vastXML2 = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--inline2.xml')).toString();
                             vast1 = new VAST(VAST.pojoFromXML(vastXML1));
 
                             LiePromise.resolve().then(function() {
@@ -1363,7 +1363,7 @@ describe('VAST', function() {
 
                 describe('when called on a minimal vast', function() {
                     beforeEach(function() {
-                        xmlVAST = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--minimal.xml')).toString().trim();
+                        xmlVAST = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--minimal.xml')).toString().trim();
                         vast = new VAST(VAST.pojoFromXML(xmlVAST));
                     });
 
