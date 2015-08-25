@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <foo>A quote is this: &quot;It&apos;s going to be a bumpy ride for me &amp; my friends!&quot;</foo>
+    <bar quote="&quot;" apostrophe="&apos;" ampersand="&amp;" tag="&lt;bar&gt;"><![CDATA["I don't need to be escpaed!" <xml> CDATA rules!]]></bar>
+    <tag>&lt;xml&gt;</tag>
+    <data><![CDATA[It is hard to put a ]]]]><![CDATA[> in a cdata section. You have to split up the ]]]]><![CDATA[>... It's not easy.]]></data>
+</root>

@@ -37,9 +37,11 @@ function deepObjectContaining(object) {
 
 describe('VAST', function() {
     var jsonVAST;
+    var xmlVAST;
 
     beforeEach(function() {
-        jsonVAST = require('../../lib/pojo_from_xml')(require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString());
+        xmlVAST = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0.xml')).toString().trim();
+        jsonVAST = require('../../lib/pojo_from_xml')(xmlVAST);
     });
 
     it('should exist', function() {
@@ -1350,6 +1352,23 @@ describe('VAST', function() {
                         it('should reject the promise', function() {
                             expect(failure).toHaveBeenCalledWith(new Error('Too many redirects were made.'));
                         });
+                    });
+                });
+            });
+
+            describe('toXML()', function() {
+                it('should convert the VAST into a string of XML', function() {
+                    expect(vast.toXML()).toBe(xmlVAST);
+                });
+
+                describe('when called on a minimal vast', function() {
+                    beforeEach(function() {
+                        xmlVAST = require('fs').readFileSync(require('path').resolve(__dirname, '../helpers/vast_2.0--minimal.xml')).toString().trim();
+                        vast = new VAST(VAST.pojoFromXML(xmlVAST));
+                    });
+
+                    it('should work', function() {
+                        expect(vast.toXML()).toBe(xmlVAST);
                     });
                 });
             });

@@ -3,14 +3,14 @@
     <Ad id="229">
         <InLine>
             <AdSystem>LiveRail</AdSystem>
-            <AdTitle><![CDATA[LiveRail creative 2]]></AdTitle>
+            <AdTitle>LiveRail creative 2</AdTitle>
             <Impression><![CDATA[http://pr.ybp.yahoo.com/sync/liverail/3.1427315934667.3769710346467753322]]></Impression>
             <Creatives>
                 <Creative>
                     <Linear>
                         <Duration>00:00:11</Duration>
                         <MediaFiles>
-                            <MediaFile delivery="progressive" width="640" height="480" type="video/x-flv"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/7969/lo.flv]]></MediaFile>
+                            <MediaFile width="640" height="480" type="video/x-flv" delivery="progressive"><![CDATA[http://cdn.liverail.com/adasset4/1331/229/7969/lo.flv]]></MediaFile>
                         </MediaFiles>
                     </Linear>
                 </Creative>
@@ -34,8 +34,8 @@
     <Ad id="602833">
         <Wrapper>
             <AdSystem>Acudeo Compatible</AdSystem>
-            <VASTAdTagURI>http://demo.tremormedia.com/proddev/vast/vast_inline_linear.xml</VASTAdTagURI>
-            <Impression>http://myTrackingURL/wrapper/impression</Impression>
+            <VASTAdTagURI><![CDATA[http://demo.tremormedia.com/proddev/vast/vast_inline_linear.xml]]></VASTAdTagURI>
+            <Impression><![CDATA[http://myTrackingURL/wrapper/impression]]></Impression>
             <Creatives></Creatives>
         </Wrapper>
     </Ad>
