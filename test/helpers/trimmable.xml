@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<User>
+    <name>Joshua D. Minzner</name>
+    <company privacy="self">Cinema6, Inc.</company>
+    <superiors></superiors>
+    <friends public="true"></friends>
+    <website personal="false"><![CDATA[http://www.minzner.org]]></website>
+    <hungry>false</hungry>
+    <homes><![CDATA[0]]></homes>
+    <parents>
+        <parent>
+            <name>Louan</name>
+        </parent>
+        <parent>
+            <name>Dan</name>
+        </parent>
+    </parents>
+</User>
