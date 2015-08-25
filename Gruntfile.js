@@ -27,7 +27,7 @@ module.exports = function gruntfile(grunt) {
         watch: {
             test: {
                 files: CODE,
-                tasks: ['test']
+                tasks: ['jasmine:test', 'jshint']
             }
         },
         jshint: {
@@ -37,15 +37,40 @@ module.exports = function gruntfile(grunt) {
             code: {
                 src: CODE
             }
+        },
+        karma: {
+            options: {
+                configFile: 'test/karma.conf.js'
+            },
+            tdd: {
+                options: {
+                    autoWatch: true
+                }
+            },
+            test: {
+                options: {
+                    singleRun: true
+                }
+            }
         }
     });
 
     grunt.registerTask('test', [
         'jasmine:test',
+        'karma:test',
         'jshint:code'
     ]);
 
-    grunt.registerTask('tdd', [
-        'watch:test'
-    ]);
+    grunt.registerTask('tdd', function(_target_) {
+        var target = _target_ || 'node';
+
+        grunt.task.run((function() {
+            switch (target) {
+            case 'node':
+                return 'watch:test';
+            case 'browser':
+                return 'karma:tdd';
+            }
+        }()));
+    });
 };

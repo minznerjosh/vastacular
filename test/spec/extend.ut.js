@@ -10,7 +10,7 @@ describe('extend(...objects)', function() {
         };
         two = {
             town: 'Princeton',
-            zip: 08542
+            zip: '08542'
         };
         three = {
             hello: 'is it me you\'re looking for?',
@@ -23,7 +23,7 @@ describe('extend(...objects)', function() {
             hello: 'is it me you\'re looking for?',
             foo: 'bar',
             town: 'Princeton',
-            zip: 08542,
+            zip: '08542',
             state: 'NJ'
         });
     });
