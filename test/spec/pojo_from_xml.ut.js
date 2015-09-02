@@ -24,6 +24,10 @@ describe('pojoFromXML(xml)', function() {
         expect(pojo.ads.length).toBe(queryXML('Ad').length);
     });
 
+    it('should throw an error if nonsense is provided', function() {
+        expect(function() { pojoFromXML('foo bar'); }).toThrow(new Error('[foo bar] is not a valid VAST document.'));
+    });
+
     describe('an inline ad', function() {
         var inline;
         var inlineXML;
