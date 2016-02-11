@@ -1405,6 +1405,18 @@ describe('VAST', function() {
                         expect(vast.toXML()).toBe(xmlVAST);
                     });
                 });
+
+                describe('if called on invalid VAST', function() {
+                    beforeEach(function() {
+                        vast = new VAST(VAST.pojoFromXML(require('fs').readFileSync(require.resolve('../helpers/vast_2.0--invalid.xml')).toString()));
+                    });
+
+                    it('should throw an Error', function() {
+                        expect(function() { vast.toXML(); }).toThrow(new Error(
+                            'VAST is invalid: ' + vast.validate().reasons.join(', ')
+                        ));
+                    });
+                });
             });
 
             describe('validate()', function() {
