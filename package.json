@@ -1,6 +1,6 @@
 {
   "name": "vastacular",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fetches/parses IAB VAST 2.0/3.0 XML.",
   "main": "index.js",
   "scripts": {
