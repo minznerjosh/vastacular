@@ -267,6 +267,40 @@ describe('VAST', function() {
             expect(vast.ads[0].impressions[0]).not.toBe(jsonVAST.ads[0].impressions[0]);
         });
 
+        describe('with invalid VAST', function() {
+            beforeEach(function() {
+                jsonVAST = require('../../lib/pojo_from_xml')(require('fs').readFileSync(require.resolve('../helpers/vast_2.0--invalid.xml')).toString());
+                vast = new VAST(jsonVAST);
+            });
+
+            it('should instantiate', function() {
+                expect(vast).toEqual(deepObjectContaining({
+                    version: '2.0',
+                    ads: [
+                        {
+                            system: {
+                                version: null
+                            },
+                            type: 'inline',
+                            errors: [],
+                            impressions: [],
+                            creatives: [
+                                {
+                                    type: 'linear',
+                                    mediaFiles: [
+                                        {
+                                            type: 'video/x-flv',
+                                            uri: 'http://media.scanscout.com/ads/partner1_a1d1fbbc-c4d4-419f-b6c8-e9db63fd4491.flv'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }));
+            });
+        });
+
         describe('with minimal configuration', function() {
             beforeEach(function() {
                 jsonVAST = {
@@ -1369,6 +1403,291 @@ describe('VAST', function() {
 
                     it('should work', function() {
                         expect(vast.toXML()).toBe(xmlVAST);
+                    });
+                });
+
+                describe('if called on invalid VAST', function() {
+                    beforeEach(function() {
+                        vast = new VAST(VAST.pojoFromXML(require('fs').readFileSync(require.resolve('../helpers/vast_2.0--invalid.xml')).toString()));
+                    });
+
+                    it('should throw an Error', function() {
+                        expect(function() { vast.toXML(); }).toThrow(new Error(
+                            'VAST is invalid: ' + vast.validate().reasons.join(', ')
+                        ));
+                    });
+                });
+            });
+
+            describe('validate()', function() {
+                it('should return an Object indicating validity', function() {
+                    expect(vast.validate()).toEqual({ valid: true, reasons: null });
+                });
+
+                describe('with VAST with multiple issues', function() {
+                    beforeEach(function() {
+                        vast = new VAST(VAST.pojoFromXML(require('fs').readFileSync(require.resolve('../helpers/vast_2.0--invalid.xml')).toString()));
+                    });
+
+                    it('should include all the reasons the VAST is not valid', function() {
+                        expect(vast.validate()).toEqual({
+                            valid: false,
+                            reasons: jasmine.arrayContaining([
+                                'ads[0].system.name is required',
+                                'ads[0].impressions must contain at least one value',
+                                'ads[0].title is required',
+                                'ads[0].creatives[0].duration is required'
+                            ])
+                        });
+                    });
+                });
+
+                describe('if the VAST has no ads', function() {
+                    beforeEach(function() {
+                        vast.ads.length = 0;
+                    });
+
+                    it('should return an Object indicating invalidity', function() {
+                        expect(vast.validate()).toEqual({ valid: false, reasons: ['ads must contain at least one value'] });
+                    });
+                });
+
+                describe('an inline ad', function() {
+                    var ad;
+
+                    beforeEach(function() {
+                        ad = vast.find('ads', function(ad) {
+                            return ad.type === 'inline';
+                        });
+                    });
+
+                    describe('with no type', function() {
+                        beforeEach(function() {
+                            delete ad.type;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].type is required'] });
+                        });
+                    });
+
+                    describe('without an ad system name', function() {
+                        beforeEach(function() {
+                            delete ad.system.name;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].system.name is required'] });
+                        });
+                    });
+
+                    describe('without a title', function() {
+                        beforeEach(function() {
+                            delete ad.title;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].title is required'] });
+                        });
+                    });
+
+                    describe('without an impression', function() {
+                        beforeEach(function() {
+                            ad.impressions.length = 0;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].impressions must contain at least one value'] });
+                        });
+                    });
+
+                    describe('without any creatives', function() {
+                        beforeEach(function() {
+                            ad.creatives.length = 0;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives must contain at least one value'] });
+                        });
+                    });
+
+                    describe('with a linear creative', function() {
+                        var creative, index;
+
+                        beforeEach(function() {
+                            creative = vast.find('ads[' + vast.ads.indexOf(ad) + '].creatives', function(creative) {
+                                return creative.type === 'linear';
+                            });
+                            index = vast.ads[vast.ads.indexOf(ad)].creatives.indexOf(creative);
+                        });
+
+                        describe('without a type', function() {
+                            beforeEach(function() {
+                                delete creative.type;
+                            });
+
+                            it('should return an Object indicating invalidity', function() {
+                                expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives[' + index + '].type is required'] });
+                            });
+                        });
+
+                        describe('without a duration', function() {
+                            beforeEach(function() {
+                                delete creative.duration;
+                            });
+
+                            it('should return an Object indicating invalidity', function() {
+                                expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives[' + index + '].duration is required'] });
+                            });
+                        });
+
+                        describe('without any mediaFiles', function() {
+                            beforeEach(function() {
+                                creative.mediaFiles.length = 0;
+                            });
+
+                            it('should return an Object indicating invalidity', function() {
+                                expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives[' + index + '].mediaFiles must contain at least one value'] });
+                            });
+                        });
+                    });
+
+                    describe('with a companion ads creative', function() {
+                        var creative, index;
+
+                        beforeEach(function() {
+                            creative = vast.find('ads[' + vast.ads.indexOf(ad) + '].creatives', function(creative) {
+                                return creative.type === 'companions';
+                            });
+                            index = vast.ads[vast.ads.indexOf(ad)].creatives.indexOf(creative);
+                        });
+
+                        describe('without a type', function() {
+                            beforeEach(function() {
+                                delete creative.type;
+                            });
+
+                            it('should return an Object indicating invalidity', function() {
+                                expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives[' + index + '].type is required'] });
+                            });
+                        });
+
+                        describe('companion', function() {
+                            var companion;
+
+                            beforeEach(function() {
+                                companion = creative.companions[0];
+                            });
+
+                            describe('without any resources', function() {
+                                beforeEach(function() {
+                                    companion.resources.length = 0;
+                                });
+
+                                it('should return an Object indicating invalidity', function() {
+                                    expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives[' + index + '].companions[0].resources must contain at least one value'] });
+                                });
+                            });
+                        });
+                    });
+
+                    describe('with a nonLinear creative', function() {
+                        var creative, index;
+
+                        beforeEach(function() {
+                            creative = vast.find('ads[' + vast.ads.indexOf(ad) + '].creatives', function(creative) {
+                                return creative.type === 'nonLinear';
+                            });
+                            index = vast.ads[vast.ads.indexOf(ad)].creatives.indexOf(creative);
+                        });
+
+                        describe('without a type', function() {
+                            beforeEach(function() {
+                                delete creative.type;
+                            });
+
+                            it('should return an Object indicating invalidity', function() {
+                                expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives[' + index + '].type is required'] });
+                            });
+                        });
+
+                        describe('ad', function() {
+                            var ad;
+
+                            beforeEach(function() {
+                                ad = creative.ads[0];
+                            });
+
+                            describe('without any resources', function() {
+                                beforeEach(function() {
+                                    ad.resources.length = 0;
+                                });
+
+                                it('should return an Object indicating invalidity', function() {
+                                    expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[0].creatives[' + index + '].ads[0].resources must contain at least one value'] });
+                                });
+                            });
+                        });
+                    });
+                });
+
+                describe('with a wrapper ad', function() {
+                    var ad;
+
+                    beforeEach(function() {
+                        ad = vast.find('ads', function(ad) {
+                            return ad.type === 'wrapper';
+                        });
+                    });
+
+                    describe('with no type', function() {
+                        beforeEach(function() {
+                            delete ad.type;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[1].type is required'] });
+                        });
+                    });
+
+                    describe('without an ad system name', function() {
+                        beforeEach(function() {
+                            delete ad.system.name;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[1].system.name is required'] });
+                        });
+                    });
+
+                    describe('without a vastAdTagURI', function() {
+                        beforeEach(function() {
+                            delete ad.vastAdTagURI;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[1].vastAdTagURI is required'] });
+                        });
+                    });
+
+                    describe('without an impression', function() {
+                        beforeEach(function() {
+                            ad.impressions.length = 0;
+                        });
+
+                        it('should return an Object indicating invalidity', function() {
+                            expect(vast.validate()).toEqual({ valid: false, reasons: ['ads[1].impressions must contain at least one value'] });
+                        });
+                    });
+
+                    describe('without any creatives', function() {
+                        beforeEach(function() {
+                            ad.creatives.length = 0;
+                        });
+
+                        it('should return an Object indicating validity', function() {
+                            expect(vast.validate()).toEqual({ valid: true, reasons: null });
+                        });
                     });
                 });
             });

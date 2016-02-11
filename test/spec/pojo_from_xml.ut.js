@@ -5,6 +5,7 @@ var stringToBoolean = require('../../lib/utils/string_to_boolean');
 var trimObject = require('../../lib/utils/trim_object');
 var xml = require('fs').readFileSync(require.resolve('../helpers/vast_2.0.xml')).toString();
 var minimalXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--minimal.xml')).toString();
+var invalidXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--invalid.xml')).toString();
 
 describe('pojoFromXML(xml)', function() {
     var pojo;
@@ -527,6 +528,39 @@ describe('pojoFromXML(xml)', function() {
                     creatives: [],
                     vastAdTagURI: 'http://demo.tremormedia.com/proddev/vast/vast_inline_linear.xml'
                 });
+            });
+        });
+    });
+
+    describe('if given invalid VAST', function() {
+        beforeEach(function() {
+            queryXML = parseXML(invalidXML);
+            pojo = pojoFromXML(invalidXML);
+        });
+
+        it('should be parsed', function() {
+            expect(pojo).toEqual({
+                version: '2.0',
+                ads: [
+                    {
+                        type: 'inline',
+                        system: {},
+                        errors: [],
+                        impressions: [],
+                        creatives: [
+                            {
+                                type: 'linear',
+                                trackingEvents: [],
+                                mediaFiles: [
+                                    {
+                                        type: 'video/x-flv',
+                                        uri: 'http://media.scanscout.com/ads/partner1_a1d1fbbc-c4d4-419f-b6c8-e9db63fd4491.flv'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             });
         });
     });
