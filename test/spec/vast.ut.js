@@ -1304,6 +1304,25 @@ describe('VAST', function() {
                     });
                 });
 
+                describe('and the wrapper is empty', function() {
+                    var vastXML, vast;
+
+                    beforeEach(function(done) {
+                        vastXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0--wrapper--empty.xml')).toString();
+                        vast = new VAST(VAST.pojoFromXML(vastXML));
+
+                        LiePromise.resolve().then(done);
+                    });
+
+                    it('should throw an Error', function() {
+                        expect(function() {
+                            vast.resolveWrappers();
+                        }).toThrow(new Error(
+                            'Empty Wrapper VAST URL'
+                        ));
+                    });
+                });
+
                 describe('if maxRedirects is specified', function() {
                     function wait(time) {
                         return new LiePromise(function(resolve) {
