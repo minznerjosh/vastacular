@@ -81,6 +81,9 @@ describe('VAST', function() {
                             },
                             set: jasmine.createSpy('req.set()').and.callFake(function() {
                                 return this;
+                            }),
+                            withCredentials: jasmine.createSpy('req.withCredentials()').and.callFake(function() {
+                                return this;
                             })
                         };
 
@@ -187,6 +190,16 @@ describe('VAST', function() {
                     it('should make a request with the provided headers', function() {
                         expect(request.get).toHaveBeenCalledWith(uri);
                         expect(requestDeferreds[uri].request.set).toHaveBeenCalledWith({ 'API-Key': 'foobar', Accept: 'application/json' });
+                    });
+                });
+
+                describe('if options.withCredentials is provided', function() {
+                    beforeEach(function() {
+                        VAST.fetch(uri, { withCredentials: true });
+                    });
+
+                    it('should call withCredentials of request', function() {
+                        expect(requestDeferreds[uri].request.withCredentials).toHaveBeenCalledWith();
                     });
                 });
 
